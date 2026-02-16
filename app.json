@@ -9,19 +9,14 @@
       "bundler": "metro"
     },
     "android": {
-      "package": "com.yourname.otpauthapp",
+      "package": "com.girishsain.otpauthapp",
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
       }
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.yourname.otpauthapp"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "b3fe3c81-0824-4a91-a8f0-c533607ae048"
-      }
+      "bundleIdentifier": "com.girishsain.otpauthapp"
     }
   }
 }

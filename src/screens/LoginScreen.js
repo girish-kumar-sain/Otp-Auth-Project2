@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import {
-  KeyboardAvoidingView, Platform,
+  Alert, KeyboardAvoidingView, Platform,
   ScrollView, StyleSheet, Text, TextInput, View,
 } from 'react-native';
 import { Button, Card, Input, SectionHeader } from '../components';
@@ -11,8 +11,8 @@ import { Colors, Font, Radius, Shadow, Space } from '../styles/theme';
 const isValidEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e.trim());
 
 const LoginScreen = ({ navigation }) => {
-  const [email,   setEmail]   = useState('');
-  const [error,   setError]   = useState('');
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const inputRef = useRef(null);
 
@@ -23,15 +23,18 @@ const LoginScreen = ({ navigation }) => {
 
   const handleSend = useCallback(async () => {
     const trimmed = email.trim();
-    if (!trimmed)               { setError('Please enter your email address.'); return; }
+    if (!trimmed) { setError('Please enter your email address.'); return; }
     if (!isValidEmail(trimmed)) { setError('Please enter a valid email address.'); return; }
     setLoading(true);
     setError('');
     try {
       const code = generateOTP(trimmed);
       analytics.otpGenerated(trimmed);
-      console.log(`[DEV] OTP for ${trimmed}: ${code}`);
-      navigation.navigate('Otp', { email: trimmed });
+      Alert.alert(
+        '🔑 Your OTP',
+        `${code}`,
+        [{ text: 'OK', onPress: () => navigation.navigate('Otp', { email: trimmed }) }]
+      );
     } catch {
       setError('Something went wrong. Please try again.');
     } finally {
@@ -116,13 +119,13 @@ const s = StyleSheet.create({
   grow: { flexGrow: 1 },
 
   header: {
-    backgroundColor:   Colors.blue50,
-    paddingTop:        Space[16],
-    paddingBottom:     Space[10],
+    backgroundColor: Colors.blue50,
+    paddingTop: Space[16],
+    paddingBottom: Space[10],
     paddingHorizontal: Space[6],
-    alignItems:        'center',
-    overflow:          'hidden',
-    position:          'relative',
+    alignItems: 'center',
+    overflow: 'hidden',
+    position: 'relative',
   },
   decCircleLg: {
     position: 'absolute', top: -60, right: -60,
@@ -142,7 +145,7 @@ const s = StyleSheet.create({
   },
   logoEmoji: { fontSize: 36 },
   heroTitle: { fontSize: Font['4xl'] - 2, fontWeight: Font.bold, color: Colors.blue900, letterSpacing: -0.5 },
-  heroSub:   { color: Colors.blue500, fontSize: Font.base, marginTop: Space[1] + 2, textAlign: 'center', fontWeight: Font.medium },
+  heroSub: { color: Colors.blue500, fontSize: Font.base, marginTop: Space[1] + 2, textAlign: 'center', fontWeight: Font.medium },
 
   body: { flex: 1, padding: Space[5], paddingTop: Space[7] },
 
@@ -151,16 +154,16 @@ const s = StyleSheet.create({
     borderRadius: Radius.lg, padding: Space[4],
     borderWidth: 1, borderColor: Colors.infoBorder,
   },
-  infoBannerTitle: { color: Colors.blue700, fontWeight: Font.bold,    fontSize: Font.sm, marginBottom: Space[1] + 2 },
-  infoBannerText:  { color: Colors.blue500, fontWeight: Font.regular, fontSize: Font.xs, lineHeight: Font.xs * Font.loose },
+  infoBannerTitle: { color: Colors.blue700, fontWeight: Font.bold, fontSize: Font.sm, marginBottom: Space[1] + 2 },
+  infoBannerText: { color: Colors.blue500, fontWeight: Font.regular, fontSize: Font.xs, lineHeight: Font.xs * Font.loose },
 
   devBanner: {
     marginTop: Space[2] + 2, backgroundColor: Colors.warningLight,
     borderRadius: Radius.lg, padding: Space[4],
     borderWidth: 1, borderColor: Colors.warningBorder,
   },
-  devBannerTitle: { color: '#92400e', fontWeight: Font.bold,    fontSize: Font.xs, marginBottom: Space[1] },
-  devBannerText:  { color: '#b45309', fontWeight: Font.regular, fontSize: Font.xs, lineHeight: Font.xs * Font.loose },
+  devBannerTitle: { color: '#92400e', fontWeight: Font.bold, fontSize: Font.xs, marginBottom: Space[1] },
+  devBannerText: { color: '#b45309', fontWeight: Font.regular, fontSize: Font.xs, lineHeight: Font.xs * Font.loose },
 });
 
 export default LoginScreen;
