@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "OTP Auth",
+    "slug": "otp-auth-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "web": {
+      "bundler": "metro"
+    },
+    "android": {
+      "package": "com.yourname.otpauthapp",
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.yourname.otpauthapp"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b3fe3c81-0824-4a91-a8f0-c533607ae048"
+      }
+    }
+  }
+}
