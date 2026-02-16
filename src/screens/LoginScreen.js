@@ -35,8 +35,9 @@ const LoginScreen = ({ navigation }) => {
         `${code}`,
         [{ text: 'OK', onPress: () => navigation.navigate('Otp', { email: trimmed }) }]
       );
-    } catch {
-      setError('Something went wrong. Please try again.');
+    } catch (err) {
+      console.error('OTP Error:', err);
+      setError(`Error: ${err.message}`);
     } finally {
       setLoading(false);
     }

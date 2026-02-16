@@ -20,6 +20,12 @@
     },
     "web": {
       "bundler": "metro"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b3fe3c81-0824-4a91-a8f0-c533607ae048"
+      }
+    },
+    "owner": "girishsain"
   }
 }
