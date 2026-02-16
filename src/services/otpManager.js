@@ -10,8 +10,8 @@
  *  • Per-email isolation: plain object keyed by email
  */
 
-export const OTP_LENGTH       = 6;
-export const OTP_EXPIRY_MS    = 60_000;
+export const OTP_LENGTH = 6;
+export const OTP_EXPIRY_MS = 60_000;
 export const OTP_MAX_ATTEMPTS = 3;
 
 // Module-level store — encapsulated here, never exported directly
@@ -20,12 +20,7 @@ const otpStore = {};
 const normalise = (email) => email.trim().toLowerCase();
 
 const generateSecureCode = () => {
-  const bytes = new Uint8Array(4);
-  (globalThis.crypto ?? global.crypto).getRandomValues(bytes);
-  const val = (
-    ((bytes[0] << 24) | (bytes[1] << 16) | (bytes[2] << 8) | bytes[3]) >>> 0
-  );
-  return String(100_000 + (val % 900_000));
+  return String(Math.floor(100_000 + Math.random() * 900_000));
 };
 
 /**
@@ -34,15 +29,15 @@ const generateSecureCode = () => {
  * Returns the plaintext code (for dev console logging).
  */
 export const generateOTP = (email) => {
-  const key  = normalise(email);
+  const key = normalise(email);
   const code = generateSecureCode();
-  const now  = Date.now();
+  const now = Date.now();
   otpStore[key] = {
     code,
     generatedAt: now,
-    expiresAt:   now + OTP_EXPIRY_MS,
-    attempts:    0,
-    consumed:    false,
+    expiresAt: now + OTP_EXPIRY_MS,
+    attempts: 0,
+    consumed: false,
   };
   return code;
 };
@@ -53,7 +48,7 @@ export const generateOTP = (email) => {
  * Statuses: 'success' | 'invalid' | 'expired' | 'max_attempts' | 'not_found'
  */
 export const validateOTP = (email, submitted) => {
-  const key    = normalise(email);
+  const key = normalise(email);
   const record = otpStore[key];
 
   if (!record || record.consumed) {
@@ -72,8 +67,8 @@ export const validateOTP = (email, submitted) => {
       return { status: 'max_attempts', message: 'Too many incorrect attempts. Please request a new OTP.', remainingAttempts: 0 };
     }
     return {
-      status:            'invalid',
-      message:           `Incorrect OTP. ${remaining} attempt${remaining === 1 ? '' : 's'} remaining.`,
+      status: 'invalid',
+      message: `Incorrect OTP. ${remaining} attempt${remaining === 1 ? '' : 's'} remaining.`,
       remainingAttempts: remaining,
     };
   }
